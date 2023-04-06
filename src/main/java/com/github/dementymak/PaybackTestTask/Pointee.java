@@ -4,34 +4,51 @@ import java.util.Random;
 import com.github.dementymak.PaybackTestTask.Checkerboard;
 
 public class Pointee {
+    Pointee(int col, int row){
+        this.col = col;
+        this.row = row;
+    }
     private int col;
     private int row;
     private Random rand = new Random();
 
     public void JumpPointee(Checkerboard checkerboard) {
-        for (int i = 0; i < checkerboard.getSize(); i++) {
-            for (int j = 0; j < checkerboard.getSize(); j++) {
-                if (col == 0) {
+
+
+
+                if(this.getCol() > 0 && this.getCol() < 14) {
+                    int jumpcol = rand.nextInt(3) - 1;
+                    col = this.getCol() + jumpcol;
+                }
+                if (this.getCol() == 0) {
                     int jumpcol = rand.nextInt(2);
-                    col = i + jumpcol;
+                    col = this.getCol() + jumpcol;
                 }
-                if(col == 14) {
-                    int jumpcol = rand.nextInt(2) - 1;
-                    col = i + jumpcol;
-                }
-                int jumpcol = rand.nextInt(3) - 1;
-                col = i + jumpcol;
-                if (row == 0) {
-                    int jumprow = rand.nextInt(2);
-                    col = i + jumprow;
-                }
-                if(row == 14) {
-                    int jumprow = rand.nextInt(2) - 1;
-                    col = i + jumprow;
-                }
-                int jumprow = rand.nextInt(3) - 1;
-                row = j + jumprow;
-            }
+        if(this.getCol() == 14) {
+            int jumpcol = rand.nextInt(2) - 1;
+            col = this.getCol() + jumpcol;
         }
+
+
+                if(this.getRow() > 0 && this.getRow() < 14) {
+                    int jumprow = rand.nextInt(3) - 1;
+                    row = this.getRow() + jumprow;
+                }
+                if (this.getRow() == 0) {
+                    int jumprow = rand.nextInt(2);
+                    row = this.getRow() + jumprow;
+                }
+        if(this.getRow() == 14) {
+            int jumprow = rand.nextInt(2) - 1;
+            row = this.getRow() + jumprow;
+        }
+
+    }
+
+    public int getCol(){
+        return col;
+    }
+    public int getRow(){
+        return row;
     }
 }
