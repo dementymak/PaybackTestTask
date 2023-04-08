@@ -17,7 +17,7 @@ public class Checkerboard {
         pointees = new Pointee[size][size];
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                coupons[i][j] = new Coupon(i , j);
+                coupons[i][j] = new Coupon(i , j, Integer.toString(i+j));
                 pointees[i][j] = new Pointee(i, j);
             }
         }

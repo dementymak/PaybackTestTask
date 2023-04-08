@@ -3,22 +3,22 @@ package com.github.dementymak.PaybackTestTask;
 import org.apache.commons.logging.Log;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.origin.SystemEnvironmentOrigin;
 
-import javax.swing.*;
-import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.*;
 
 @SpringBootApplication
 public class PaybackTestTaskApplication {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		SpringApplication.run(PaybackTestTaskApplication.class, args);
-
 		int checkboardSize = 15;
-		int roundCount = 25;
+
+		System.out.println("Enter round count: 1-100");
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		int roundCount = Integer.parseInt(reader.readLine());
 
 
 		Checkerboard[] checkboards = new Checkerboard[roundCount];
@@ -33,6 +33,9 @@ public class PaybackTestTaskApplication {
 
 			System.out.println(Arrays.deepToString(checkerboard.coupons));
 			System.out.println(Arrays.deepToString(checkerboard.pointees));
+			System.out.println();
+			System.out.println("pointees");
+			System.out.println("round number: " + round);
 
 			for (Pointee[] pointee : checkerboard.pointees) {
 				System.out.println();
@@ -43,12 +46,17 @@ public class PaybackTestTaskApplication {
 					System.out.print("  ");
 				}
 			}
-
+			/*Function jumping pointees*/
 			for (Pointee[] pointee : checkerboard.pointees) {
 				for (Pointee point : pointee) {
 					point.JumpPointee(checkerboard);
 				}
 			}
+			/*Show coordinats pointees after jumping*/
+			System.out.println();
+			System.out.println();
+			System.out.println("pointees after jumping");
+			System.out.println("round number: " + round);
 
 			for (Pointee[] pointee : checkerboard.pointees) {
 
@@ -66,24 +74,19 @@ public class PaybackTestTaskApplication {
 
 		}
 
-
+		/*counting pointees on coupons*/
 		for (Checkerboard board : checkboards) {
-
 			for (Pointee[] point : board.pointees) {
-
-				System.out.println();
 				for (Pointee poin : point) {
-
 					result[poin.getRow()][poin.getCol()] = result[poin.getRow()][poin.getCol()]+1;
-
-
 				}
 			}
-
 		}
 
 
-
+		/*show Count pointee per each coupon*/
+		System.out.println();
+		System.out.println();
 		System.out.println("Count pointee per each coupon AFTER 25 ROUNDS:");
 		for (int[] col2 : result) {
 
@@ -96,45 +99,37 @@ public class PaybackTestTaskApplication {
 		}
 
 
-
+		/*calculate and show the coupon(s) with the highest number of points.*/
+		System.out.println();
+		System.out.println();
 		System.out.println("MAX COUPON");
+		System.out.println();
 
+		int max = result[0][0];
+		List<String> coordinates = new ArrayList<>(); // Список координат найбільшого елемента
 
-		int maxInRow = 0;
-
-
-
-		for(int i = 0; i < checkboardSize; i++){
-			for(int j = 0; j < checkboardSize-1; j++){
-				for(int k = 0; k < checkboardSize-1; k++){
-					if(result[i][k]>result[i][k+1]){
-						int temp = result[i][k];
-						result[i][k] = result[i][k+1];
-						result[i][k+1] = temp;
-					}
-
+		// Перебираємо всі елементи масиву та знаходимо максимальний
+		for (int i = 0; i < result.length; i++) {
+			for (int j = 0; j < result[i].length; j++) {
+				if (result[i][j] > max) {
+					max = result[i][j];
 				}
 			}
 		}
 
-		for (int[] col2 : result) {
-
-			System.out.println();
-			for (int row2 : col2) {
-				System.out.print(row2);
-				System.out.print("  ");
+		// add coordinats
+		for (int i = 0; i < result.length; i++) {
+			for (int j = 0; j < result[i].length; j++) {
+				if (result[i][j] == max) {
+					coordinates.add("(" + i + ", " + j + ")");
+				}
 			}
-
 		}
 
-
-
-
-
-
-
+		// show result
+		System.out.println("max count coupon: " + max);
+		System.out.println("coordinats of max count coupon(s): " + String.join(", ", coordinates));
+		if(round == 25 || round == 50 || round ==100)
+			System.out.println("You can exchange your points for coupons");
 	}
-
-
-
 }
